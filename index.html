@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Shwe Browser</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #0b0b0b;
+        color: white;
+        overflow: hidden;
+      }
+
+      #topbar {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px;
+        background: #111;
+        border-bottom: 1px solid #222;
+        height: 60px;
+        box-sizing: border-box;
+      }
+
+      button {
+        background: #1a1a1a;
+        color: white;
+        border: 1px solid #333;
+        padding: 8px 12px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.2s;
+      }
+
+      button:hover {
+        background: #222;
+      }
+
+      #url {
+        flex: 1;
+        padding: 10px;
+        border-radius: 10px;
+        border: 1px solid #333;
+        outline: none;
+        background: #0f0f0f;
+        color: white;
+        font-size: 14px;
+      }
+
+      #brand {
+        font-weight: bold;
+        color: gold;
+        margin-right: 10px;
+        font-size: 16px;
+      }
+
+      /* Homepage */
+      #homepage {
+        height: calc(100vh - 60px);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 25px;
+      }
+
+      #logo {
+        font-size: 55px;
+        font-weight: bold;
+        color: gold;
+        letter-spacing: 2px;
+      }
+
+      #searchBox {
+        width: 520px;
+        max-width: 90%;
+        display: flex;
+        gap: 10px;
+      }
+
+      #searchInput {
+        flex: 1;
+        padding: 14px;
+        border-radius: 30px;
+        border: 1px solid #333;
+        outline: none;
+        font-size: 16px;
+        background: #111;
+        color: white;
+      }
+
+      #searchBtn {
+        border-radius: 30px;
+        padding: 14px 20px;
+        background: gold;
+        color: black;
+        font-weight: bold;
+        border: none;
+        cursor: pointer;
+      }
+
+      #searchBtn:hover {
+        background: #ffdf4d;
+      }
+
+      #quickLinks {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+        max-width: 700px;
+      }
+
+      .linkCard {
+        background: #111;
+        border: 1px solid #222;
+        padding: 15px;
+        border-radius: 14px;
+        width: 140px;
+        text-align: center;
+        cursor: pointer;
+        transition: 0.2s;
+      }
+
+      .linkCard:hover {
+        background: #1a1a1a;
+        border: 1px solid gold;
+      }
+
+      .emoji {
+        font-size: 26px;
+      }
+
+      .linkTitle {
+        font-size: 14px;
+        margin-top: 8px;
+        color: #ddd;
+      }
+    </style>
+    <script defer src="renderer.js"></script>
+  </head>
+
+  <body>
+    <div id="topbar">
+      <div id="brand">Shwe Browser</div>
+
+      <button id="backBtn">⬅</button>
+      <button id="forwardBtn">➡</button>
+      <button id="reloadBtn">🔄</button>
+      <button id="homeBtn">🏠</button>
+
+      <input id="url" type="text" placeholder="Enter URL..." />
+
+      <button id="goBtn">Go</button>
+    </div>
+
+    <!-- Homepage UI -->
+    <div id="homepage">
+      <div id="logo">Shwe Browser</div>
+
+      <div id="searchBox">
+        <input id="searchInput" placeholder="Search Google..." />
+        <button id="searchBtn">Search</button>
+      </div>
+
+      <div id="quickLinks">
+        <div class="linkCard" onclick="openSite('https://google.com')">
+          <div class="emoji">🔎</div>
+          <div class="linkTitle">Google</div>
+        </div>
+
+        <div class="linkCard" onclick="openSite('https://youtube.com')">
+          <div class="emoji">▶️</div>
+          <div class="linkTitle">YouTube</div>
+        </div>
+
+        <div class="linkCard" onclick="openSite('https://facebook.com')">
+          <div class="emoji">📘</div>
+          <div class="linkTitle">Facebook</div>
+        </div>
+
+        <div class="linkCard" onclick="openSite('https://wikipedia.org')">
+          <div class="emoji">📚</div>
+          <div class="linkTitle">Wikipedia</div>
+        </div>
+
+        <div class="linkCard" onclick="openSite('https://github.com')">
+          <div class="emoji">💻</div>
+          <div class="linkTitle">GitHub</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- All UI logic is now handled in renderer.js -->
+  </body>
+</html>
