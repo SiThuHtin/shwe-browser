@@ -1,196 +1,339 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Shwe Browser</title>
-    <style>
-      body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background: #0b0b0b;
-        color: white;
-        overflow: hidden;
-      }
 
-      #topbar {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 10px;
-        background: #111;
-        border-bottom: 1px solid #222;
-        height: 60px;
-        box-sizing: border-box;
-      }
+<head>
+  <title>Shwe Browser</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&display=swap');
 
-      button {
-        background: #1a1a1a;
-        color: white;
-        border: 1px solid #333;
-        padding: 8px 12px;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: 0.2s;
-      }
+    :root {
+      --bg-color: #121212;
+      --surface-color: #1e1e1e;
+      --border-color: #333;
+      --accent-color: #ffd700;
+      /* Gold */
+      --accent-hover: #ffea70;
+      --text-color: #e0e0e0;
+      --text-muted: #a0a0a0;
+      --input-bg: #0b0b0b;
+    }
 
-      button:hover {
-        background: #222;
-      }
+    [data-theme="light"] {
+      --bg-color: #f5f5f5;
+      --surface-color: #ffffff;
+      --border-color: #e0e0e0;
+      --accent-color: #ffaa00;
+      /* Darker orange-gold for better visibility on white */
+      --accent-hover: #ffbf00;
+      --text-color: #212121;
+      --text-muted: #757575;
+      --input-bg: #ffffff;
+    }
 
-      #url {
-        flex: 1;
-        padding: 10px;
-        border-radius: 10px;
-        border: 1px solid #333;
-        outline: none;
-        background: #0f0f0f;
-        color: white;
-        font-size: 14px;
-      }
+    body {
+      margin: 0;
+      font-family: 'Padauk', 'Segoe UI', sans-serif;
+      background: var(--bg-color);
+      color: var(--text-color);
+      overflow: hidden;
+    }
 
-      #brand {
-        font-weight: bold;
-        color: gold;
-        margin-right: 10px;
-        font-size: 16px;
-      }
+    /* --- Top Toolbar --- */
+    #topbar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 16px;
+      background: var(--surface-color);
+      border-bottom: 1px solid var(--border-color);
+      height: 60px;
+      box-sizing: border-box;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      z-index: 100;
+      position: relative;
+    }
 
-      /* Homepage */
-      #homepage {
-        height: calc(100vh - 60px);
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 25px;
-      }
+    #brand {
+      font-weight: 700;
+      color: var(--accent-color);
+      font-size: 18px;
+      margin-right: 8px;
+      letter-spacing: 0.5px;
+      user-select: none;
+    }
 
-      #logo {
-        font-size: 55px;
-        font-weight: bold;
-        color: gold;
-        letter-spacing: 2px;
-      }
+    button {
+      background: transparent;
+      color: var(--text-color);
+      border: 1px solid transparent;
+      padding: 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      min-width: 36px;
+      height: 36px;
+    }
 
-      #searchBox {
-        width: 520px;
-        max-width: 90%;
-        display: flex;
-        gap: 10px;
-      }
+    button:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
 
-      #searchInput {
-        flex: 1;
-        padding: 14px;
-        border-radius: 30px;
-        border: 1px solid #333;
-        outline: none;
-        font-size: 16px;
-        background: #111;
-        color: white;
-      }
+    button:active {
+      transform: scale(0.95);
+    }
 
-      #searchBtn {
-        border-radius: 30px;
-        padding: 14px 20px;
-        background: gold;
-        color: black;
-        font-weight: bold;
-        border: none;
-        cursor: pointer;
-      }
+    #url {
+      flex: 1;
+      padding: 10px 16px;
+      border-radius: 20px;
+      border: 1px solid var(--border-color);
+      outline: none;
+      background: var(--input-bg);
+      color: var(--text-color);
+      font-size: 14px;
+      transition: border-color 0.2s;
+    }
 
-      #searchBtn:hover {
-        background: #ffdf4d;
-      }
+    #url:focus {
+      border-color: var(--accent-color);
+    }
 
-      #quickLinks {
-        display: flex;
-        gap: 15px;
-        flex-wrap: wrap;
-        justify-content: center;
-        max-width: 700px;
-      }
+    #goBtn {
+      background: var(--accent-color);
+      color: #000;
+      font-weight: 600;
+      padding: 0 16px;
+    }
 
-      .linkCard {
-        background: #111;
-        border: 1px solid #222;
-        padding: 15px;
-        border-radius: 14px;
-        width: 140px;
-        text-align: center;
-        cursor: pointer;
-        transition: 0.2s;
-      }
+    #goBtn:hover {
+      background: var(--accent-hover);
+    }
 
-      .linkCard:hover {
-        background: #1a1a1a;
-        border: 1px solid gold;
-      }
+    /* --- Homepage --- */
+    #homepage {
+      height: calc(100vh - 60px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 40px;
+      background: var(--bg-color);
+    }
 
-      .emoji {
-        font-size: 26px;
-      }
+    #logo {
+      font-size: 64px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent-color), #ff6b6b);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -2px;
+    }
 
-      .linkTitle {
-        font-size: 14px;
-        margin-top: 8px;
-        color: #ddd;
-      }
-    </style>
-    <script defer src="renderer.js"></script>
-  </head>
+    #searchBox {
+      width: 600px;
+      max-width: 90%;
+      display: flex;
+      gap: 12px;
+      background: var(--surface-color);
+      padding: 8px;
+      border-radius: 50px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      transition: box-shadow 0.2s;
+    }
 
-  <body>
-    <div id="topbar">
-      <div id="brand">Shwe Browser</div>
+    #searchBox:focus-within {
+      box-shadow: 0 0 0 2px var(--accent-color);
+    }
 
-      <button id="backBtn">⬅</button>
-      <button id="forwardBtn">➡</button>
-      <button id="reloadBtn">🔄</button>
-      <button id="homeBtn">🏠</button>
+    #searchInput {
+      flex: 1;
+      padding: 12px 20px;
+      border: none;
+      outline: none;
+      font-size: 16px;
+      background: transparent;
+      color: var(--text-color);
+    }
 
-      <input id="url" type="text" placeholder="Enter URL..." />
+    #searchBtn {
+      border-radius: 40px;
+      padding: 0 24px;
+      background: var(--accent-color);
+      color: black;
+      font-weight: 700;
+      height: 48px;
+      box-shadow: 0 2px 10px rgba(255, 215, 0, 0.2);
+    }
 
-      <button id="goBtn">Go</button>
+    #searchBtn:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+    }
+
+    #quickLinks {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 800px;
+    }
+
+    .linkCard {
+      background: var(--surface-color);
+      border: 1px solid var(--border-color);
+      padding: 20px;
+      border-radius: 16px;
+      width: 100px;
+      height: 100px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .linkCard::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.05));
+      opacity: 0;
+      transition: 0.2s;
+    }
+
+    .linkCard:hover {
+      transform: translateY(-5px);
+      border-color: var(--accent-color);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .linkCard:hover::before {
+      opacity: 1;
+    }
+
+    .emoji {
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+
+    .linkTitle {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .linkCard:hover .linkTitle {
+      color: var(--text-color);
+    }
+  </style>
+  <script defer src="renderer.js"></script>
+</head>
+
+<body>
+  <div id="topbar">
+    <div id="brand">Shwe Browser</div>
+
+    <button id="backBtn" title="Back">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 12H5" />
+        <path d="M12 19l-7-7 7-7" />
+      </svg>
+    </button>
+    <button id="forwardBtn" title="Forward">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 12h14" />
+        <path d="M12 5l7 7-7 7" />
+      </svg>
+    </button>
+    <button id="reloadBtn" title="Reload">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <path d="M23 4v6h-6" />
+        <path d="M1 20v-6h6" />
+        <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
+      </svg>
+    </button>
+    <button id="homeBtn" title="Home">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+        <polyline points="9 22 9 12 15 12 15 22" />
+      </svg>
+    </button>
+    <button id="fontBtn" title="Change Font (Unicode/Zawgyi)">
+      <!-- Initial icon for Auto -->
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round"><text x="50%" y="54%" dominant-baseline="middle"
+          text-anchor="middle" font-size="16" font-weight="bold" fill="currentColor">A</text>
+        <circle cx="12" cy="12" r="10" />
+      </svg>
+    </button>
+    <button id="themeBtn" title="Toggle Dark/Light Mode">
+      <!-- Initial icon for Moon -->
+      <svg class="moon-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+      </svg>
+    </button>
+
+    <input id="url" type="text" placeholder="Enter URL..." />
+
+    <button id="goBtn">Go</button>
+  </div>
+
+  <!-- Homepage UI -->
+  <div id="homepage">
+    <div id="logo">Shwe Browser</div>
+
+    <div id="searchBox">
+      <input id="searchInput" placeholder="Search Google..." />
+      <button id="searchBtn">Search</button>
     </div>
 
-    <!-- Homepage UI -->
-    <div id="homepage">
-      <div id="logo">Shwe Browser</div>
-
-      <div id="searchBox">
-        <input id="searchInput" placeholder="Search Google..." />
-        <button id="searchBtn">Search</button>
+    <div id="quickLinks">
+      <div class="linkCard" onclick="openSite('https://google.com')">
+        <div class="emoji">🔎</div>
+        <div class="linkTitle">Google</div>
       </div>
 
-      <div id="quickLinks">
-        <div class="linkCard" onclick="openSite('https://google.com')">
-          <div class="emoji">🔎</div>
-          <div class="linkTitle">Google</div>
-        </div>
+      <div class="linkCard" onclick="openSite('https://youtube.com')">
+        <div class="emoji">▶️</div>
+        <div class="linkTitle">YouTube</div>
+      </div>
 
-        <div class="linkCard" onclick="openSite('https://youtube.com')">
-          <div class="emoji">▶️</div>
-          <div class="linkTitle">YouTube</div>
-        </div>
+      <div class="linkCard" onclick="openSite('https://facebook.com')">
+        <div class="emoji">📘</div>
+        <div class="linkTitle">Facebook</div>
+      </div>
 
-        <div class="linkCard" onclick="openSite('https://facebook.com')">
-          <div class="emoji">📘</div>
-          <div class="linkTitle">Facebook</div>
-        </div>
+      <div class="linkCard" onclick="openSite('https://wikipedia.org')">
+        <div class="emoji">📚</div>
+        <div class="linkTitle">Wikipedia</div>
+      </div>
 
-        <div class="linkCard" onclick="openSite('https://wikipedia.org')">
-          <div class="emoji">📚</div>
-          <div class="linkTitle">Wikipedia</div>
-        </div>
-
-        <div class="linkCard" onclick="openSite('https://github.com')">
-          <div class="emoji">💻</div>
-          <div class="linkTitle">GitHub</div>
-        </div>
+      <div class="linkCard" onclick="openSite('https://github.com')">
+        <div class="emoji">💻</div>
+        <div class="linkTitle">GitHub</div>
       </div>
     </div>
+  </div>
 
-    <!-- All UI logic is now handled in renderer.js -->
-  </body>
+  <!-- All UI logic is now handled in renderer.js -->
+</body>
+
 </html>
